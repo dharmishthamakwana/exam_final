@@ -143,7 +143,7 @@ class _AddTaskState extends State<AddTask> {
                         context: context,
                         initialTime: TimeOfDay(hour: 2, minute: 12));
                   },
-                  icon: Icon(Icons.schedule),
+                  icon: Align(alignment: Alignment.centerLeft,child: Icon(Icons.schedule)),
                 ),
               ),
             ],

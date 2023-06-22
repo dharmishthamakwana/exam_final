@@ -39,7 +39,6 @@ class _FirstScreenState extends State<FirstScreen> {
         body: ListView.builder(
           itemBuilder: (context, index) {
             return ListTile(
-              leading: Text("${dbHelper.readData}"),
               onLongPress: () {
                 Get.toNamed('update');
               },
