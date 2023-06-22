@@ -1,7 +1,10 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled2/utiles/dbhelper.dart';
+
+import '../controller/Task_Controller.dart';
+
 
 class AddTask extends StatefulWidget {
   const AddTask({Key? key}) : super(key: key);
@@ -11,156 +14,255 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
-  TextEditingController txttask = TextEditingController();
-  TextEditingController txtnote = TextEditingController();
-  TextEditingController txtdate = TextEditingController(text: "22/06/23");
-  TextEditingController txtpriority = TextEditingController();
-  TextEditingController txttime = TextEditingController();
-  DbHelper dbHelper = DbHelper();
+
+  TaskController controller = Get.put(TaskController());
+  TextEditingController txttitle = TextEditingController();
+  TextEditingController txtnotes = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: InkWell(
-              onTap: () {
-                Get.toNamed('first');
-              },
-              child: Icon(Icons.arrow_back)),
-          title: Text("Add Task"),
-          backgroundColor: Colors.teal.shade600,
+          backgroundColor: Colors.black,
+          title: Text("Add Data"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
+          child: ListView(
             children: [
+              Text(
+                "Enter Title",
+                style: TextStyle(fontSize: 19),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              TextFormField(
+                controller: txttitle,
+                cursorColor: Colors.black,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: InputDecoration(
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(width: 1.5),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Enter Notes",
+                style: TextStyle(fontSize: 19),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                height: 100,
+                child: TextFormField(
+                  controller: txtnotes,
+                  cursorColor: Colors.black,
+                  maxLines: 50,
+                  textCapitalization: TextCapitalization.sentences,
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(width: 1.5),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Choose Date",
+                style: TextStyle(fontSize: 19),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                height: 45,
+                width: 207,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    topLeft: Radius.circular(10),
+                  ),
+                ),
+                alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(right: 5, top: 5, bottom: 5),
+                child: TextButton(
+                  onPressed: () async {
+                    DateTime? date = await showDatePicker(
+                      context: context,
+                      initialDate: controller.currentdate.value,
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2030),
+                      builder: (context, child) => Theme(
+                          data: Theme.of(context).copyWith(
+                            colorScheme: ColorScheme.light(
+                                primary: Color(0XFF1E2140),
+                                onPrimary: Colors.white,
+                                onSurface: Colors.black),
+                            textButtonTheme: TextButtonThemeData(
+                              style: TextButton.styleFrom(
+                                primary: Color(0XFF1E2140),
+                              ),
+                            ),
+                          ),
+                          child: child!),
+                    );
+                    controller.setdate(date!);
+                  },
+                  child: Obx(
+                        () => Text(
+                      "${controller.currentdate.value.year}/${controller.currentdate.value.month}/${controller.currentdate.value.day}",
+                      style:
+                      TextStyle(color: Colors.grey.shade700, fontSize: 18),
+                    ),
+                  ),
+                ),
+              ),
+              // InkWell(
+              //   onTap: () async {
+              //     DateTime? date = await showDatePicker(
+              //         context: context,
+              //         initialDate: controller.currentdate.value,
+              //         firstDate: DateTime(1950),
+              //         lastDate: DateTime(2030),
+              //         builder: (context, child) => Theme(
+              //             data: Theme.of(context).copyWith(
+              //               colorScheme: ColorScheme.light(
+              //                   primary: Color(0XFF1E2140),
+              //                   onPrimary: Colors.white,
+              //                   onSurface: Colors.black),
+              //               textButtonTheme: TextButtonThemeData(
+              //                 style: TextButton.styleFrom(
+              //                   primary: Color(0XFF1E2140),
+              //                 ),
+              //               ),
+              //             ),
+              //             child: child!));
+              //     print("${date!.year}");
+              //   },
+              //   child: Container(
+              //     height: 60,
+              //     decoration: BoxDecoration(
+              //       border: Border.all(color: Colors.black),
+              //       borderRadius: BorderRadius.circular(10),
+              //     ),
+              //   ),
+              // ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Choose Time",
+                style: TextStyle(fontSize: 19),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              InkWell(
+                onTap: () async {
+                  TimeOfDay? pickedtime = await showTimePicker(
+                    context: context,
+                    initialTime: controller.currenttime.value,
+                    builder: (context, child) => MediaQuery(
+                        data: MediaQuery.of(context)
+                            .copyWith(alwaysUse24HourFormat: true),
+                        child: child!),
+                  );
+                  controller.currenttime.value = pickedtime!;
+                },
+                child: Container(
+                  height: 60,
+                  width: 207,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  margin: EdgeInsets.only(right: 5, bottom: 5),
+                  padding: EdgeInsets.all(15),
+                  child: Obx(
+                        () => Text(
+                      "${controller.currenttime.value.hour}:${controller.currenttime.value.minute}",
+                      style:
+                      TextStyle(color: Colors.grey.shade700, fontSize: 18),
+                    ),
+                  ),
+                ),
+              ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      height: 30,
-                      width: 70,
-                      child: Center(child: Text("urgent")),
-                      decoration: BoxDecoration(
-                        color: Colors.red.shade200,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+                  ElevatedButton(
+                    onPressed: () {
+                      DbHelper dbhelper = DbHelper();
+                      String date =
+                          "${controller.currentdate.value.year}/${controller.currentdate.value.month}/${controller.currentdate.value.day}";
+                      dbhelper.insertData(
+                          priority: "High",
+                          notes: txtnotes.text,
+                          date: "$date",
+                          time: "${controller.currenttime.value}",
+                          title: txttitle.text);
+                      Get.back();
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.red)),
+                    child: Text("High"),
                   ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      height: 30,
-                      width: 70,
-                      child: Center(child: Text("high")),
-                      decoration: BoxDecoration(
-                        color: Colors.blue.shade200,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+                  ElevatedButton(
+                    onPressed: () {
+                      DbHelper dbhelper = DbHelper();
+                      String date =
+                          "${controller.currentdate.value.year}/${controller.currentdate.value.month}/${controller.currentdate.value.day}";
+                      dbhelper.insertData(
+                          priority: "Low",
+                          notes: txtnotes.text,
+                          date: "$date",
+                          time: "${controller.currenttime.value}",
+                          title: txttitle.text);
+                      Get.back();
+                    },
+                    style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStatePropertyAll(Colors.green)),
+                    child: Text("Low"),
                   ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      height: 30,
-                      width: 70,
-                      child: Center(
-                        child: Text("urgent"),
-                      ),
-                      decoration: BoxDecoration(
-                          color: Colors.orange.shade200,
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
+                  ElevatedButton(
+                    onPressed: () {
+                      DbHelper dbhelper = DbHelper();
+                      String date =
+                          "${controller.currentdate.value.year}/${controller.currentdate.value.month}/${controller.currentdate.value.day}";
+                      dbhelper.insertData(
+                          priority: "Urgent",
+                          notes: txtnotes.text,
+                          date: "$date",
+                          time: "${controller.currenttime.value}",
+                          title: txttitle.text);
+                      Get.back();
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                    child: Text("Urgent"),
                   ),
                 ],
               ),
-              SizedBox(
-                height: 20,
-              ),
-              TextField(
-                controller: txttask,
-                decoration: InputDecoration(
-                  label: Text(
-                    "title",
-                    style: TextStyle(color: Colors.teal.shade600),
-                  ),
-                  enabledBorder: OutlineInputBorder(),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.teal.shade600),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              TextField(
-                controller: txtnote,
-                decoration: InputDecoration(
-                  label: Text("note",
-                      style: TextStyle(color: Colors.teal.shade600)),
-                  enabledBorder: OutlineInputBorder(),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.teal.shade600),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.teal.shade900)),
-                child: TextButton(
-                  onPressed: () {
-                    showDatePicker(
-                        context: context,
-                        initialDate: DateTime(2023),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2030));
-                  },
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "22/06/2023",
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.teal.shade900)),
-                child: IconButton(
-                  onPressed: () {
-                    showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay(hour: 2, minute: 12));
-                  },
-                  icon: Align(alignment: Alignment.centerLeft,child: Icon(Icons.schedule)),
-                ),
-              ),
             ],
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.teal.shade600,
-          onPressed: () {
-            dbHelper.insertData(
-                priority: txtpriority,
-                notes: txtnote.text,
-                date: txtdate.text,
-                time: txttime.text,
-                title: txttask);
-            Get.back();
-          },
-          child: Icon(Icons.add),
         ),
       ),
     );

@@ -11,7 +11,7 @@ void main() {
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (p0) => SpleshScreen(),
-        'first': (p0) => FirstScreen(),
+        'first': (p0) => HomeScreen(),
         'second': (p0) => AddTask(),
         'update':(p0) => UpdateTask(),
       },

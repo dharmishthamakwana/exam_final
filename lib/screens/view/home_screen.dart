@@ -1,23 +1,22 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:untitled2/utiles/dbhelper.dart';
+import 'package:untitled2/screens/controller/Task_Controller.dart';
 
-class FirstScreen extends StatefulWidget {
-  const FirstScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<FirstScreen> createState() => _FirstScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _FirstScreenState extends State<FirstScreen> {
-  DbHelper dbHelper = DbHelper();
-
-  get id => null;
+class _HomeScreenState extends State<HomeScreen> {
+  TaskController controller = Get.put(TaskController());
 
   @override
   void initState() {
     super.initState();
-    dbHelper.readData();
+    controller.readData();
   }
 
   @override
@@ -25,38 +24,60 @@ class _FirstScreenState extends State<FirstScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: InkWell(
-            onTap: () {
-              Get.toNamed('/');
-            },
-            child: Icon(
-              Icons.arrow_back,
-            ),
-          ),
-          title: Text("Todo app"),
-          backgroundColor: Colors.teal.shade600,
-        ),
-        body: ListView.builder(
-          itemBuilder: (context, index) {
-            return ListTile(
-              onLongPress: () {
-                Get.toNamed('update');
-              },
-              onTap: () {
-                dbHelper.deleteData(id: id);
-              },
-            );
-          },
-          itemCount: 10,
+          backgroundColor: Colors.black,
+          title: Text("Home Screen"),
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.teal.shade600,
           onPressed: () {
-            Get.toNamed('second');
+            Get.toNamed("/add")!.then((value) => controller.readData());
           },
-          child: Icon(
-            Icons.add,
-          ),
+          child: Icon(Icons.add),
+        ),
+        body: Obx(
+              () => ListView.builder(
+              itemBuilder: (context, index) => GestureDetector(
+                onLongPress: () {
+                  Get.toNamed("/update", arguments: index);
+                },
+                child: Container(
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: (controller.readToList[index]['priority'] ==
+                          "High")
+                          ? Colors.red
+                          : (controller.readToList[index]['priority'] ==
+                          "Low")
+                          ? Colors.green
+                          : Colors.blue),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${controller.readToList[index]['title']}',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                int id =
+                                controller.readToList[index]['id'];
+                                controller.DeleteData(id);
+                              },
+                              icon: Icon(Icons.delete)),
+                        ],
+                      ),
+                      Text('${controller.readToList[index]['notes']}'),
+                      Text('${controller.readToList[index]['priority']}'),
+                      Text('${controller.readToList[index]['date']}'),
+                    ],
+                  ),
+                ),
+              ),
+              itemCount: controller.readToList.length),
         ),
       ),
     );
