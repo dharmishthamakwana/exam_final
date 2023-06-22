@@ -12,6 +12,8 @@ class FirstScreen extends StatefulWidget {
 class _FirstScreenState extends State<FirstScreen> {
   DbHelper dbHelper = DbHelper();
 
+  get id => null;
+
   @override
   void initState() {
     super.initState();
@@ -34,9 +36,20 @@ class _FirstScreenState extends State<FirstScreen> {
           title: Text("Todo app"),
           backgroundColor: Colors.teal.shade600,
         ),
-        body: ListView.builder(itemBuilder: (context, index) {
-          return Container();
-        }, itemCount:10,),
+        body: ListView.builder(
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: Text("${dbHelper.readData}"),
+              onLongPress: () {
+                Get.toNamed('update');
+              },
+              onTap: () {
+                dbHelper.deleteData(id: id);
+              },
+            );
+          },
+          itemCount: 10,
+        ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.teal.shade600,
           onPressed: () {
