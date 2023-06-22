@@ -147,11 +147,9 @@ class _UpdateTaskState extends State<UpdateTask> {
               SizedBox(
                 height: 10,
               ),
-
               Container(
                 height: 50,
                 child: TextFormField(
-
                   controller: txtnotes,
                   cursorColor: Colors.teal,
                   maxLines: 50,
@@ -262,11 +260,10 @@ class _UpdateTaskState extends State<UpdateTask> {
                   ),
                 ),
               ),
-
-                ],
-              ),
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }
