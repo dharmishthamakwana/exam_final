@@ -230,37 +230,18 @@ class _UpdateTaskState extends State<UpdateTask> {
               SizedBox(
                 height: 5,
               ),
-              InkWell(
-                onTap: () async {
-                  TimeOfDay? pickedtime = await showTimePicker(
-                    context: context,
-                    initialTime: controller.currenttime.value,
-                    builder: (context, child) => MediaQuery(
-                        data: MediaQuery.of(context)
-                            .copyWith(alwaysUse24HourFormat: false
-                        ),
-                        child: child!),
-                  );
-                  controller.currenttime.value = pickedtime!;
-                },
-                child: Container(
-                  height: 60,
-                  width: 207,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.teal),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  margin: EdgeInsets.only(right: 5, bottom: 5),
-                  padding: EdgeInsets.all(15),
-                  child: Obx(
-                    () => Text(
-                      "${controller.currenttime.value.hour}:${controller.currenttime.value.minute}",
-                      style:
-                          TextStyle(color: Colors.grey.shade700, fontSize: 18),
-                    ),
-                  ),
-                ),
-              ),
+              IconButton(onPressed: () async {
+                TimeOfDay? pickedtime = await showTimePicker(
+                  context: context,
+                  initialTime: controller.currenttime.value,
+                  builder: (context, child) => MediaQuery(
+                      data: MediaQuery.of(context)
+                          .copyWith(alwaysUse24HourFormat: false
+                      ),
+                      child: child!),
+                );
+                controller.currenttime.value = pickedtime!;
+              }, icon: Icon(Icons.schedule_outlined))
             ],
           ),
         ),
