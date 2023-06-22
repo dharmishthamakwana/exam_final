@@ -1,10 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled2/utiles/dbhelper.dart';
 
 import '../controller/Task_Controller.dart';
-
 
 class AddTask extends StatefulWidget {
   const AddTask({Key? key}) : super(key: key);
@@ -14,7 +12,6 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
-
   TaskController controller = Get.put(TaskController());
   TextEditingController txttitle = TextEditingController();
   TextEditingController txtnotes = TextEditingController();
@@ -24,25 +21,91 @@ class _AddTaskState extends State<AddTask> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.teal,
           title: Text("Add Data"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListView(
             children: [
-              Text(
-                "Enter Title",
-                style: TextStyle(fontSize: 19),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  InkWell(
+                      onTap: () {
+                        DbHelper dbhelper = DbHelper();
+                        String date =
+                            "${controller.currentdate.value.year}/${controller.currentdate.value.month}/${controller.currentdate.value.day}";
+                        dbhelper.insertData(
+                            priority: "High",
+                            notes: txtnotes.text,
+                            date: "$date",
+                            time: "${controller.currenttime.value}",
+                            title: txttitle.text);
+                        Get.back();
+                      },
+                      child: Container(
+                        height: 35,
+                        width: 70,
+                        child: Center(child: Text("High")),
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(30)),
+                      )),
+                  InkWell(
+                      onTap: () {
+                        DbHelper dbhelper = DbHelper();
+                        String date =
+                            "${controller.currentdate.value.year}/${controller.currentdate.value.month}/${controller.currentdate.value.day}";
+                        dbhelper.insertData(
+                            priority: "Low",
+                            notes: txtnotes.text,
+                            date: "$date",
+                            time: "${controller.currenttime.value}",
+                            title: txttitle.text);
+                        Get.back();
+                      },
+                      child: Container(
+                        height: 35,
+                        width: 70,
+                        child: Center(child: Text("Low")),
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(30)),
+                      )),
+                  InkWell(
+                    onTap: () {
+                      DbHelper dbhelper = DbHelper();
+                      String date =
+                          "${controller.currentdate.value.year}/${controller.currentdate.value.month}/${controller.currentdate.value.day}";
+                      dbhelper.insertData(
+                          priority: "Urgent",
+                          notes: txtnotes.text,
+                          date: "$date",
+                          time: "${controller.currenttime.value}",
+                          title: txttitle.text);
+                      Get.back();
+                    },
+                    child: Container(
+                      height: 35,
+                      width: 70,
+                      child: Center(child: Text("urgent")),
+                      decoration: BoxDecoration(
+                          color: Colors.blue.shade300,
+                          borderRadius: BorderRadius.circular(30)),
+                    ),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 5,
               ),
               TextFormField(
                 controller: txttitle,
-                cursorColor: Colors.black,
+                cursorColor: Colors.teal,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
+                  label: Text("title"),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(width: 1.5),
@@ -63,12 +126,10 @@ class _AddTaskState extends State<AddTask> {
                 height: 5,
               ),
               Container(
-                height: 100,
+                height: 50,
                 child: TextFormField(
                   controller: txtnotes,
-                  cursorColor: Colors.black,
-                  maxLines: 50,
-                  textCapitalization: TextCapitalization.sentences,
+                  cursorColor: Colors.teal,
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -114,7 +175,7 @@ class _AddTaskState extends State<AddTask> {
                             colorScheme: ColorScheme.light(
                                 primary: Color(0XFF1E2140),
                                 onPrimary: Colors.white,
-                                onSurface: Colors.black),
+                                onSurface: Colors.teal),
                             textButtonTheme: TextButtonThemeData(
                               style: TextButton.styleFrom(
                                 primary: Color(0XFF1E2140),
@@ -126,44 +187,14 @@ class _AddTaskState extends State<AddTask> {
                     controller.setdate(date!);
                   },
                   child: Obx(
-                        () => Text(
+                    () => Text(
                       "${controller.currentdate.value.year}/${controller.currentdate.value.month}/${controller.currentdate.value.day}",
                       style:
-                      TextStyle(color: Colors.grey.shade700, fontSize: 18),
+                          TextStyle(color: Colors.grey.shade700, fontSize: 18),
                     ),
                   ),
                 ),
               ),
-              // InkWell(
-              //   onTap: () async {
-              //     DateTime? date = await showDatePicker(
-              //         context: context,
-              //         initialDate: controller.currentdate.value,
-              //         firstDate: DateTime(1950),
-              //         lastDate: DateTime(2030),
-              //         builder: (context, child) => Theme(
-              //             data: Theme.of(context).copyWith(
-              //               colorScheme: ColorScheme.light(
-              //                   primary: Color(0XFF1E2140),
-              //                   onPrimary: Colors.white,
-              //                   onSurface: Colors.black),
-              //               textButtonTheme: TextButtonThemeData(
-              //                 style: TextButton.styleFrom(
-              //                   primary: Color(0XFF1E2140),
-              //                 ),
-              //               ),
-              //             ),
-              //             child: child!));
-              //     print("${date!.year}");
-              //   },
-              //   child: Container(
-              //     height: 60,
-              //     decoration: BoxDecoration(
-              //       border: Border.all(color: Colors.black),
-              //       borderRadius: BorderRadius.circular(10),
-              //     ),
-              //   ),
-              // ),
               SizedBox(
                 height: 10,
               ),
@@ -190,76 +221,19 @@ class _AddTaskState extends State<AddTask> {
                   height: 60,
                   width: 207,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
+                    border: Border.all(color: Colors.teal),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   margin: EdgeInsets.only(right: 5, bottom: 5),
                   padding: EdgeInsets.all(15),
                   child: Obx(
-                        () => Text(
+                    () => Text(
                       "${controller.currenttime.value.hour}:${controller.currenttime.value.minute}",
                       style:
-                      TextStyle(color: Colors.grey.shade700, fontSize: 18),
+                          TextStyle(color: Colors.grey.shade700, fontSize: 18),
                     ),
                   ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      DbHelper dbhelper = DbHelper();
-                      String date =
-                          "${controller.currentdate.value.year}/${controller.currentdate.value.month}/${controller.currentdate.value.day}";
-                      dbhelper.insertData(
-                          priority: "High",
-                          notes: txtnotes.text,
-                          date: "$date",
-                          time: "${controller.currenttime.value}",
-                          title: txttitle.text);
-                      Get.back();
-                    },
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.red)),
-                    child: Text("High"),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      DbHelper dbhelper = DbHelper();
-                      String date =
-                          "${controller.currentdate.value.year}/${controller.currentdate.value.month}/${controller.currentdate.value.day}";
-                      dbhelper.insertData(
-                          priority: "Low",
-                          notes: txtnotes.text,
-                          date: "$date",
-                          time: "${controller.currenttime.value}",
-                          title: txttitle.text);
-                      Get.back();
-                    },
-                    style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStatePropertyAll(Colors.green)),
-                    child: Text("Low"),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      DbHelper dbhelper = DbHelper();
-                      String date =
-                          "${controller.currentdate.value.year}/${controller.currentdate.value.month}/${controller.currentdate.value.day}";
-                      dbhelper.insertData(
-                          priority: "Urgent",
-                          notes: txtnotes.text,
-                          date: "$date",
-                          time: "${controller.currenttime.value}",
-                          title: txttitle.text);
-                      Get.back();
-                    },
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.blue)),
-                    child: Text("Urgent"),
-                  ),
-                ],
               ),
             ],
           ),

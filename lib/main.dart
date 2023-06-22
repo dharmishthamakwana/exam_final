@@ -12,7 +12,7 @@ void main() {
       routes: {
         '/': (p0) => SpleshScreen(),
         'first': (p0) => HomeScreen(),
-        'second': (p0) => AddTask(),
+        'add': (p0) => AddTask(),
         'update':(p0) => UpdateTask(),
       },
     ),
