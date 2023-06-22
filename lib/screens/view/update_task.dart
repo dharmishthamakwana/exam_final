@@ -237,7 +237,8 @@ class _UpdateTaskState extends State<UpdateTask> {
                     initialTime: controller.currenttime.value,
                     builder: (context, child) => MediaQuery(
                         data: MediaQuery.of(context)
-                            .copyWith(alwaysUse24HourFormat: true),
+                            .copyWith(alwaysUse24HourFormat: false
+                        ),
                         child: child!),
                   );
                   controller.currenttime.value = pickedtime!;
