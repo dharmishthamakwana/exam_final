@@ -47,9 +47,16 @@ class _AddTaskState extends State<AddTask> {
                       child: Container(
                         height: 35,
                         width: 70,
-                        child: Center(child: Text("High")),
+                        child: Center(
+                          child: Text(
+                            "High",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                         decoration: BoxDecoration(
-                            color: Colors.red,
+                            color: Colors.red.shade200,
                             borderRadius: BorderRadius.circular(30)),
                       )),
                   InkWell(
@@ -68,9 +75,16 @@ class _AddTaskState extends State<AddTask> {
                       child: Container(
                         height: 35,
                         width: 70,
-                        child: Center(child: Text("Low")),
+                        child: Center(
+                          child: Text(
+                            "Low",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                         decoration: BoxDecoration(
-                            color: Colors.green,
+                            color: Colors.green.shade200,
                             borderRadius: BorderRadius.circular(30)),
                       )),
                   InkWell(
@@ -89,7 +103,14 @@ class _AddTaskState extends State<AddTask> {
                     child: Container(
                       height: 35,
                       width: 70,
-                      child: Center(child: Text("urgent")),
+                      child: Center(
+                        child: Text(
+                          "urgent",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                       decoration: BoxDecoration(
                           color: Colors.blue.shade300,
                           borderRadius: BorderRadius.circular(30)),

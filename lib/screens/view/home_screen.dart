@@ -13,12 +13,6 @@ class _HomeScreenState extends State<HomeScreen> {
   TaskController controller = Get.put(TaskController());
 
   @override
-  void initState() {
-    super.initState();
-    controller.readData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -26,7 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Colors.teal,
           title: Text("Home Screen"),
         ),
-
         body: Obx(
           () => ListView.builder(
               itemBuilder: (context, index) => GestureDetector(
@@ -40,11 +33,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderRadius: BorderRadius.circular(20),
                           color: (controller.readToList[index]['priority'] ==
                                   "High")
-                              ? Colors.red
+                              ? Colors.red.shade200
                               : (controller.readToList[index]['priority'] ==
                                       "Low")
-                                  ? Colors.green
-                                  : Colors.blue),
+                                  ? Colors.green.shade200
+                                  : Colors.blue.shade200),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -55,12 +48,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 '${controller.readToList[index]['title']}',
                                 style: TextStyle(fontSize: 20),
                               ),
-                              IconButton(
+                              TextButton(
                                 onPressed: () {
                                   int id = controller.readToList[index]['id'];
                                   controller.DeleteData(id);
                                 },
-                                icon: Icon(Icons.delete),
+                                child: Text("cancle",
+                                    style: TextStyle(fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black)),
                               ),
                             ],
                           ),
