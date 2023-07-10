@@ -22,11 +22,14 @@ class _SpleshScreenState extends State<SpleshScreen> {
     );
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.teal.shade500,
         body: Center(
           child: Container(
             width: 200,
             height: 200,
-            child: FlutterLogo(),
+            child: Image(
+              image: AssetImage("assests/images/1.png"),
+            ),
           ),
         ),
       ),

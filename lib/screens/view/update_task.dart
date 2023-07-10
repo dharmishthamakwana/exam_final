@@ -134,12 +134,13 @@ class _UpdateTaskState extends State<UpdateTask> {
                 controller: txttitle,
                 cursorColor: Colors.teal,
                 decoration: InputDecoration(
-                  label: Text("title"),
+                  label: Text("title", style: TextStyle(color: Colors.teal)),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(width: 1.5),
+                    borderSide: BorderSide(width: 1.5, color: Colors.teal),
                   ),
                   enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal),
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
@@ -152,15 +153,17 @@ class _UpdateTaskState extends State<UpdateTask> {
                 child: TextFormField(
                   controller: txtnotes,
                   cursorColor: Colors.teal,
-                  maxLines: 50,
-                  textCapitalization: TextCapitalization.sentences,
+
                   decoration: InputDecoration(
-                    label: Text("notes"),
+                    label: Text("notes",style: TextStyle(color: Colors.teal)),
                     focusedBorder: OutlineInputBorder(
+
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(width: 1.5),
+                      borderSide: BorderSide(width: 1.5,color: Colors.teal),
                     ),
                     enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.teal),
+
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
@@ -171,7 +174,7 @@ class _UpdateTaskState extends State<UpdateTask> {
               ),
               Text(
                 "Choose Date",
-                style: TextStyle(fontSize: 19),
+                style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: 5,
@@ -181,6 +184,8 @@ class _UpdateTaskState extends State<UpdateTask> {
                 width: 207,
                 decoration: BoxDecoration(
                   color: Colors.white,
+                  border: Border.all(color: Colors.teal, width: 1),
+
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(10),
                     topLeft: Radius.circular(10),
@@ -188,37 +193,39 @@ class _UpdateTaskState extends State<UpdateTask> {
                 ),
                 alignment: Alignment.centerLeft,
                 margin: EdgeInsets.only(right: 5, top: 5, bottom: 5),
-                child: TextButton(
-                  onPressed: () async {
-                    DateTime? date = await showDatePicker(
-                      context: context,
-                      initialDate: controller.currentdate.value,
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2030),
-                      builder: (context, child) => Theme(
-                          data: Theme.of(context).copyWith(
-                            colorScheme: ColorScheme.light(
-                                primary: Color(0XFF1E2140),
-                                onPrimary: Colors.white,
-                                onSurface: Colors.teal),
-                            textButtonTheme: TextButtonThemeData(
-                              style: TextButton.styleFrom(
-                                primary: Color(0XFF1E2140),
-                              ),
-                            ),
-                          ),
-                          child: child!),
-                    );
-                    controller.setdate(date!);
-                  },
-                  child: Obx(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Obx(
                     () => Text(
                       "${controller.currentdate.value.year}/${controller.currentdate.value.month}/${controller.currentdate.value.day}",
                       style:
-                          TextStyle(color: Colors.grey.shade700, fontSize: 18),
+                          TextStyle(color: Colors.teal.shade700, fontSize: 18),
                     ),
                   ),
-                ),
+                    IconButton(onPressed: () async {
+                      DateTime? date = await showDatePicker(
+                        context: context,
+                        initialDate: controller.currentdate.value,
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2030),
+                        builder: (context, child) => Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: ColorScheme.light(
+                                  primary: Color(0XFF1E2140),
+                                  onPrimary: Colors.white,
+                                  onSurface: Colors.teal),
+                              textButtonTheme: TextButtonThemeData(
+                                style: TextButton.styleFrom(
+                                  primary: Color(0XFF1E2140),
+                                ),
+                              ),
+                            ),
+                            child: child!),
+                      );
+                      controller.setdate(date!);
+                    }, icon:Icon(Icons.date_range_outlined,) )
+               ] ),
               ),
               SizedBox(
                 height: 10,
@@ -230,18 +237,49 @@ class _UpdateTaskState extends State<UpdateTask> {
               SizedBox(
                 height: 5,
               ),
-              IconButton(onPressed: () async {
-                TimeOfDay? pickedtime = await showTimePicker(
-                  context: context,
-                  initialTime: controller.currenttime.value,
-                  builder: (context, child) => MediaQuery(
-                      data: MediaQuery.of(context)
-                          .copyWith(alwaysUse24HourFormat: false
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.teal, width: 1),
+
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    topLeft: Radius.circular(10),
+                  ),
+                ),
+                alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(right: 5, top: 5, bottom: 5),
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Obx(
+                          () => Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "${controller.currenttime.value.hour}:${controller.currenttime.value.minute}",
+                          style: TextStyle(
+                              color: Colors.grey.shade700, fontSize: 18),
+                        ),
                       ),
-                      child: child!),
-                );
-                controller.currenttime.value = pickedtime!;
-              }, icon: Icon(Icons.schedule_outlined))
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        TimeOfDay? pickedtime = await showTimePicker(
+                          context: context,
+                          initialTime: controller.currenttime.value,
+                          builder: (context, child) => MediaQuery(
+                              data: MediaQuery.of(context)
+                                  .copyWith(alwaysUse24HourFormat: false),
+                              child: child!),
+                        );
+                        controller.currenttime.value = pickedtime!;
+                      },
+                      icon: Icon(
+                        Icons.schedule_outlined,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
